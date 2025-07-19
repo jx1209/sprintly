@@ -7,8 +7,15 @@ const healthRoutes = require('./routes/health');
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/users', require('./routes/users'));
 
 app.use('/health', healthRoutes);
+
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
+
+const sprintRoutes = require('./routes/sprints');
+app.use('/api/sprints', sprintRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
