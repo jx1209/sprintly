@@ -22,16 +22,6 @@ model User {
   sprints   Sprint[]
 }
 
-model Sprint {
-  id        String     @id @default(cuid())
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String
-  title     String
-  startDate DateTime
-  endDate   DateTime
-  checkins  Checkin[]
-}
-
 model Checkin {
   id        String   @id @default(cuid())
   sprint    Sprint   @relation(fields: [sprintId], references: [id])
@@ -39,4 +29,36 @@ model Checkin {
   day       Int
   notes     String?
   createdAt DateTime @default(now())
+}
+
+model Sprint {
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  title     String
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  checkins  Checkin[]
+  goals     Goal[]
+}
+
+model Goal {
+  id          String     @id @default(cuid())
+  sprint      Sprint     @relation(fields: [sprintId], references: [id])
+  sprintId    String
+  title       String
+  description String?
+  status      GoalStatus @default(PENDING)
+  priority    Int        @default(1)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum GoalStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }
